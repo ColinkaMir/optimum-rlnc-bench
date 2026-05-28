@@ -155,8 +155,8 @@ Full caveats and known limitations in [`results-n8/combined/report-n8.md`](resul
 
 ## Related
 
+- **Companion content post (Part 1 of 2)**: [`docs/rlnc-vs-raptorcast-part1.md`](docs/rlnc-vs-raptorcast-part1.md). Bilingual EN+RU long-form interpretation of the numbers in this repo. Part 2 will cover Monad RaptorCast under identical methodology when that side is measured.
 - Multi-publish bidi deadlock bug report and patch: [upstream issue #74](https://github.com/getoptimum/optimum-dev-setup-guide/issues/74) / [PR #75](https://github.com/getoptimum/optimum-dev-setup-guide/pull/75).
-- Companion content post (RLNC vs Monad RaptorCast) — pending; will link from this repo when published.
 
 ## License
 
