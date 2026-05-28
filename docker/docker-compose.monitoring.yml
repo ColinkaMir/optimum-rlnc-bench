@@ -1,0 +1,46 @@
+services:
+  # Standalone Prometheus that attaches to whatever Optimum stack is running
+  # (works with both docker-compose-optimum.yml and docker-compose-gossipsub.yml
+  # because both define the same `optimum-network`).
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 768M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - ./metrics/grafana/prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    ports:
+      - "127.0.0.1:9095:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=2h"
+      - "--storage.tsdb.retention.size=2GB"
+    networks:
+      optimum-network:
+        ipv4_address: 172.28.0.20
+
+  # Disable the bundled grafana service from docker-compose-optimum.yml
+  # (port 3000 is occupied by the host's Lido stack).
+  grafana:
+    profiles: ["disabled"]
+
+volumes:
+  prometheus-data:
+
+networks:
+  optimum-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

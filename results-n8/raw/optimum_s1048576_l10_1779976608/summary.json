@@ -1,0 +1,90 @@
+{
+  "ts": 1779976631,
+  "mode": "optimum",
+  "size_bytes": 1048576,
+  "count": 20,
+  "sleep": "400ms",
+  "loss_pct": 10.0,
+  "n_pub_seen": 20,
+  "n_deliveries": 160,
+  "n_shards": 886,
+  "lat_n": 160,
+  "lat_mean_ms": 2239.441,
+  "lat_p50_ms": 2339.636,
+  "lat_p95_ms": 4231.87,
+  "lat_p99_ms": 5316.223,
+  "lat_max_ms": 5748.126,
+  "proc_net_tx_total": 466081176,
+  "proc_net_rx_total": 99813778,
+  "bw_out_pubsub_total": 124678154,
+  "bw_in_pubsub_total": 96583425,
+  "shards_total_delta": 366,
+  "shards_unnecessary_delta": 128,
+  "delivered_msgs_delta": 58,
+  "delivered_bytes_delta": 60817408,
+  "raw_dir": "raw/optimum_s1048576_l10_1779976608",
+  "prom_delta": {
+    "proc_net_tx_total": {
+      "p2pnode-1:9090": 111625383.0,
+      "p2pnode-2:9090": 101248640.0,
+      "p2pnode-3:9090": 110306761.0,
+      "p2pnode-4:9090": 142900392.0
+    },
+    "proc_net_rx_total": {
+      "p2pnode-1:9090": 36837701.0,
+      "p2pnode-2:9090": 28423676.0,
+      "p2pnode-3:9090": 34038658.0,
+      "p2pnode-4:9090": 513743.0
+    },
+    "bandwidth_out_optimumsub": {
+      "p2pnode-1:9090": 24678742.0,
+      "p2pnode-2:9090": 23625677.0,
+      "p2pnode-3:9090": 24419450.0,
+      "p2pnode-4:9090": 51954285.0
+    },
+    "bandwidth_in_optimumsub": {
+      "p2pnode-1:9090": 35823836.0,
+      "p2pnode-2:9090": 27622218.0,
+      "p2pnode-3:9090": 33110125.0,
+      "p2pnode-4:9090": 27246.0
+    },
+    "shards_total": {
+      "p2pnode-1:9090": 136.0,
+      "p2pnode-2:9090": 104.0,
+      "p2pnode-3:9090": 126.0,
+      "p2pnode-4:9090": 0.0
+    },
+    "shards_unnecessary": {
+      "p2pnode-1:9090": 56.0,
+      "p2pnode-2:9090": 26.0,
+      "p2pnode-3:9090": 46.0,
+      "p2pnode-4:9090": 0.0
+    },
+    "delivered_messages_count": {
+      "p2pnode-1:9090": 20.0,
+      "p2pnode-2:9090": 18.0,
+      "p2pnode-3:9090": 20.0,
+      "p2pnode-4:9090": 0.0
+    },
+    "delivered_messages_bytes": {
+      "p2pnode-1:9090": 20971520.0,
+      "p2pnode-2:9090": 18874368.0,
+      "p2pnode-3:9090": 20971520.0,
+      "p2pnode-4:9090": 0.0
+    },
+    "messages_published": {
+      "p2pnode-1:9090": 0.0,
+      "p2pnode-2:9090": 0.0,
+      "p2pnode-3:9090": 0.0,
+      "p2pnode-4:9090": 20.0
+    }
+  },
+  "latency_ms_full": {
+    "n": 160,
+    "mean": 2239.4407092124998,
+    "p50": 2339.635999,
+    "p95": 4231.86997145,
+    "p99": 5316.223041669998,
+    "max": 5748.125781
+  }
+}

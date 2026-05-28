@@ -1,0 +1,111 @@
+# vm2-anafra colocation override.
+#
+# Three goals:
+#   1. Keep all host-side ports on 127.0.0.1 (no public exposure).
+#   2. Cap CPU and memory per container so a runaway Optimum process cannot
+#      eat into Lido production capacity.
+#   3. Cap log volume so a chatty p2pnode cannot fill the host disk.
+#
+# Total CPU cap across all Optimum containers (4 p2pnodes + 2 proxies + prom):
+#   4 × 0.75 + 2 × 0.25 + 0.20 = 3.70 cores out of 8
+# This sits below the host's typical Lido baseline + Optimum so combined
+# sustained should stay under the 75% load threshold the watch monitor flags.
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  proxy-1:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 512M
+    restart: "no"
+    logging: *default-logging
+    ports: !override
+      - "127.0.0.1:8081:8080"
+      - "127.0.0.1:50051:50051"
+
+  proxy-2:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 512M
+    restart: "no"
+    logging: *default-logging
+    ports: !override
+      - "127.0.0.1:8082:8080"
+      - "127.0.0.1:50052:50051"
+
+  p2pnode-1:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 2G
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+    ports: !override
+      - "127.0.0.1:33221:33212"
+      - "127.0.0.1:7071:7070"
+      - "127.0.0.1:6061:6060"
+      - "127.0.0.1:19091:9090"
+
+  p2pnode-2:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 2G
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+    ports: !override
+      - "127.0.0.1:33222:33212"
+      - "127.0.0.1:7072:7070"
+      - "127.0.0.1:6062:6060"
+      - "127.0.0.1:19092:9090"
+
+  p2pnode-3:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 2G
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+    ports: !override
+      - "127.0.0.1:33223:33212"
+      - "127.0.0.1:7073:7070"
+      - "127.0.0.1:6063:6060"
+      - "127.0.0.1:19093:9090"
+
+  p2pnode-4:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 2G
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+    ports: !override
+      - "127.0.0.1:33224:33212"
+      - "127.0.0.1:7074:7070"
+      - "127.0.0.1:6064:6060"
+      - "127.0.0.1:19094:9090"

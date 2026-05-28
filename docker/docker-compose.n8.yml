@@ -1,0 +1,310 @@
+# N=8 mesh with capped MeshDegreeMax for forced multi-hop propagation.
+#
+# Replaces docker-compose.override.yml when running the N=8 experiment.
+# Goal: force messages from publisher to transit through ≥1 intermediate
+# node before reaching distant subscribers, so RLNC recoding has a hop to
+# work on. With N=4 and MeshDegreeMax=12 the mesh degenerated to full and
+# RLNC's recoding advantage was structurally invisible.
+#
+# Mesh params (applied to every p2pnode):
+#   OPTIMUM_MESH_MIN=3
+#   OPTIMUM_MESH_TARGET=3
+#   OPTIMUM_MESH_MAX=4    <-- key change; each node connects to at most 4
+#                              of 7 other peers, so most subscribers are
+#                              ≥2 hops from any single publisher.
+#
+# Resource caps tightened slightly per-node because we have twice as many
+# nodes; total max cap is now 8 × 0.5 + 2 × 0.25 + 0.2 = 4.7 cores out of 8.
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-p2p-base: &p2p-base
+  image: 'getoptimum/p2pnode:${P2P_NODE_VERSION-latest}'
+  platform: linux/amd64
+  restart: "no"
+  logging: *default-logging
+  deploy:
+    resources:
+      limits:
+        cpus: "0.5"
+        memory: 1500M
+
+services:
+  proxy-1:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 512M
+    restart: "no"
+    logging: *default-logging
+    environment:
+      P2P_NODES: "p2pnode-1:33212,p2pnode-2:33212,p2pnode-3:33212,p2pnode-4:33212,p2pnode-5:33212,p2pnode-6:33212,p2pnode-7:33212,p2pnode-8:33212"
+    depends_on:
+      - p2pnode-1
+      - p2pnode-2
+      - p2pnode-3
+      - p2pnode-4
+      - p2pnode-5
+      - p2pnode-6
+      - p2pnode-7
+      - p2pnode-8
+    ports: !override
+      - "127.0.0.1:8081:8080"
+      - "127.0.0.1:50051:50051"
+
+  proxy-2:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 512M
+    restart: "no"
+    logging: *default-logging
+    environment:
+      P2P_NODES: "p2pnode-1:33212,p2pnode-2:33212,p2pnode-3:33212,p2pnode-4:33212,p2pnode-5:33212,p2pnode-6:33212,p2pnode-7:33212,p2pnode-8:33212"
+    depends_on:
+      - p2pnode-1
+      - p2pnode-2
+      - p2pnode-3
+      - p2pnode-4
+      - p2pnode-5
+      - p2pnode-6
+      - p2pnode-7
+      - p2pnode-8
+    ports: !override
+      - "127.0.0.1:8082:8080"
+      - "127.0.0.1:50052:50051"
+
+  p2pnode-1:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1500M
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+      OPTIMUM_MESH_MIN: "3"
+      OPTIMUM_MESH_TARGET: "3"
+      OPTIMUM_MESH_MAX: "4"
+      GOSSIPSUB_MESH_MIN: "3"
+      GOSSIPSUB_MESH_TARGET: "3"
+      GOSSIPSUB_MESH_MAX: "4"
+    ports: !override
+      - "127.0.0.1:33221:33212"
+      - "127.0.0.1:7071:7070"
+      - "127.0.0.1:6061:6060"
+      - "127.0.0.1:19091:9090"
+
+  p2pnode-2:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1500M
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+      OPTIMUM_MESH_MIN: "3"
+      OPTIMUM_MESH_TARGET: "3"
+      OPTIMUM_MESH_MAX: "4"
+      GOSSIPSUB_MESH_MIN: "3"
+      GOSSIPSUB_MESH_TARGET: "3"
+      GOSSIPSUB_MESH_MAX: "4"
+    ports: !override
+      - "127.0.0.1:33222:33212"
+      - "127.0.0.1:7072:7070"
+      - "127.0.0.1:6062:6060"
+      - "127.0.0.1:19092:9090"
+
+  p2pnode-3:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1500M
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+      OPTIMUM_MESH_MIN: "3"
+      OPTIMUM_MESH_TARGET: "3"
+      OPTIMUM_MESH_MAX: "4"
+      GOSSIPSUB_MESH_MIN: "3"
+      GOSSIPSUB_MESH_TARGET: "3"
+      GOSSIPSUB_MESH_MAX: "4"
+    ports: !override
+      - "127.0.0.1:33223:33212"
+      - "127.0.0.1:7073:7070"
+      - "127.0.0.1:6063:6060"
+      - "127.0.0.1:19093:9090"
+
+  p2pnode-4:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1500M
+    restart: "no"
+    logging: *default-logging
+    environment:
+      OPTIMUM_MAX_MSG_SIZE: "2621440"
+      GOSSIPSUB_MAX_MSG_SIZE: "2621440"
+      OPTIMUM_MESH_MIN: "3"
+      OPTIMUM_MESH_TARGET: "3"
+      OPTIMUM_MESH_MAX: "4"
+      GOSSIPSUB_MESH_MIN: "3"
+      GOSSIPSUB_MESH_TARGET: "3"
+      GOSSIPSUB_MESH_MAX: "4"
+    ports: !override
+      - "127.0.0.1:33224:33212"
+      - "127.0.0.1:7074:7070"
+      - "127.0.0.1:6064:6060"
+      - "127.0.0.1:19094:9090"
+
+  # New nodes 5..8 — same structure as 2..4, bootstrap from p2pnode-1.
+  p2pnode-5:
+    <<: *p2p-base
+    depends_on:
+      - p2pnode-1
+    environment:
+      - LOG_LEVEL=debug
+      - CLUSTER_ID=${CLUSTER_ID}
+      - SIDECAR_PORT=33212
+      - API_PORT=9090
+      - IDENTITY_DIR=/identity
+      - NODE_MODE=optimum
+      - BOOTSTRAP_PEERS=/ip4/172.28.0.12/tcp/7070/p2p/${BOOTSTRAP_PEER_ID}
+      - OPTIMUM_PORT=7070
+      - OPTIMUM_MAX_MSG_SIZE=2621440
+      - OPTIMUM_MESH_TARGET=3
+      - OPTIMUM_MESH_MIN=3
+      - OPTIMUM_MESH_MAX=4
+      - OPTIMUM_SHARD_FACTOR=4
+      - OPTIMUM_SHARD_MULT=1.5
+      - OPTIMUM_THRESHOLD=0.75
+      - GOSSIPSUB_MAX_MSG_SIZE=2621440
+      - GOSSIPSUB_MESH_TARGET=3
+      - GOSSIPSUB_MESH_MIN=3
+      - GOSSIPSUB_MESH_MAX=4
+    networks:
+      optimum-network:
+        ipv4_address: 172.28.0.16
+    ports:
+      - "127.0.0.1:33225:33212"
+      - "127.0.0.1:7075:7070"
+      - "127.0.0.1:6065:6060"
+      - "127.0.0.1:19095:9090"
+
+  p2pnode-6:
+    <<: *p2p-base
+    depends_on:
+      - p2pnode-1
+    environment:
+      - LOG_LEVEL=debug
+      - CLUSTER_ID=${CLUSTER_ID}
+      - SIDECAR_PORT=33212
+      - API_PORT=9090
+      - IDENTITY_DIR=/identity
+      - NODE_MODE=optimum
+      - BOOTSTRAP_PEERS=/ip4/172.28.0.12/tcp/7070/p2p/${BOOTSTRAP_PEER_ID}
+      - OPTIMUM_PORT=7070
+      - OPTIMUM_MAX_MSG_SIZE=2621440
+      - OPTIMUM_MESH_TARGET=3
+      - OPTIMUM_MESH_MIN=3
+      - OPTIMUM_MESH_MAX=4
+      - OPTIMUM_SHARD_FACTOR=4
+      - OPTIMUM_SHARD_MULT=1.5
+      - OPTIMUM_THRESHOLD=0.75
+      - GOSSIPSUB_MAX_MSG_SIZE=2621440
+      - GOSSIPSUB_MESH_TARGET=3
+      - GOSSIPSUB_MESH_MIN=3
+      - GOSSIPSUB_MESH_MAX=4
+    networks:
+      optimum-network:
+        ipv4_address: 172.28.0.17
+    ports:
+      - "127.0.0.1:33226:33212"
+      - "127.0.0.1:7076:7070"
+      - "127.0.0.1:6066:6060"
+      - "127.0.0.1:19096:9090"
+
+  p2pnode-7:
+    <<: *p2p-base
+    depends_on:
+      - p2pnode-1
+    environment:
+      - LOG_LEVEL=debug
+      - CLUSTER_ID=${CLUSTER_ID}
+      - SIDECAR_PORT=33212
+      - API_PORT=9090
+      - IDENTITY_DIR=/identity
+      - NODE_MODE=optimum
+      - BOOTSTRAP_PEERS=/ip4/172.28.0.12/tcp/7070/p2p/${BOOTSTRAP_PEER_ID}
+      - OPTIMUM_PORT=7070
+      - OPTIMUM_MAX_MSG_SIZE=2621440
+      - OPTIMUM_MESH_TARGET=3
+      - OPTIMUM_MESH_MIN=3
+      - OPTIMUM_MESH_MAX=4
+      - OPTIMUM_SHARD_FACTOR=4
+      - OPTIMUM_SHARD_MULT=1.5
+      - OPTIMUM_THRESHOLD=0.75
+      - GOSSIPSUB_MAX_MSG_SIZE=2621440
+      - GOSSIPSUB_MESH_TARGET=3
+      - GOSSIPSUB_MESH_MIN=3
+      - GOSSIPSUB_MESH_MAX=4
+    networks:
+      optimum-network:
+        ipv4_address: 172.28.0.18
+    ports:
+      - "127.0.0.1:33227:33212"
+      - "127.0.0.1:7077:7070"
+      - "127.0.0.1:6067:6060"
+      - "127.0.0.1:19097:9090"
+
+  p2pnode-8:
+    <<: *p2p-base
+    depends_on:
+      - p2pnode-1
+    environment:
+      - LOG_LEVEL=debug
+      - CLUSTER_ID=${CLUSTER_ID}
+      - SIDECAR_PORT=33212
+      - API_PORT=9090
+      - IDENTITY_DIR=/identity
+      - NODE_MODE=optimum
+      - BOOTSTRAP_PEERS=/ip4/172.28.0.12/tcp/7070/p2p/${BOOTSTRAP_PEER_ID}
+      - OPTIMUM_PORT=7070
+      - OPTIMUM_MAX_MSG_SIZE=2621440
+      - OPTIMUM_MESH_TARGET=3
+      - OPTIMUM_MESH_MIN=3
+      - OPTIMUM_MESH_MAX=4
+      - OPTIMUM_SHARD_FACTOR=4
+      - OPTIMUM_SHARD_MULT=1.5
+      - OPTIMUM_THRESHOLD=0.75
+      - GOSSIPSUB_MAX_MSG_SIZE=2621440
+      - GOSSIPSUB_MESH_TARGET=3
+      - GOSSIPSUB_MESH_MIN=3
+      - GOSSIPSUB_MESH_MAX=4
+    networks:
+      optimum-network:
+        ipv4_address: 172.28.0.19
+    ports:
+      - "127.0.0.1:33228:33212"
+      - "127.0.0.1:7078:7070"
+      - "127.0.0.1:6068:6060"
+      - "127.0.0.1:19098:9090"
+
+  # Proxies need to know about the new nodes too so they can route to them.
+  # docker-compose-optimum.yml sets P2P_NODES to a 4-node list; we override
+  # to the 8-node list here.

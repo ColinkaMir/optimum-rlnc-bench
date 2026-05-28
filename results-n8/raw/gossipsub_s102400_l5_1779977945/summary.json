@@ -1,0 +1,59 @@
+{
+  "ts": 1779977982,
+  "mode": "gossipsub",
+  "size_bytes": 102400,
+  "count": 40,
+  "sleep": "200ms",
+  "loss_pct": 5.0,
+  "n_pub_seen": 40,
+  "n_deliveries": 40,
+  "n_shards": 0,
+  "lat_n": 40,
+  "lat_mean_ms": 0.459,
+  "lat_p50_ms": 0.294,
+  "lat_p95_ms": 1.308,
+  "lat_p99_ms": 2.455,
+  "lat_max_ms": 2.683,
+  "proc_net_tx_total": 85140,
+  "proc_net_rx_total": 10068,
+  "bw_out_pubsub_total": 0,
+  "bw_in_pubsub_total": 0,
+  "shards_total_delta": 0,
+  "shards_unnecessary_delta": 0,
+  "delivered_msgs_delta": 0,
+  "delivered_bytes_delta": 0,
+  "raw_dir": "raw/gossipsub_s102400_l5_1779977945",
+  "prom_delta": {
+    "proc_net_tx_total": {
+      "p2pnode-1:9090": 21424.0,
+      "p2pnode-2:9090": 16162.0,
+      "p2pnode-3:9090": 23974.0,
+      "p2pnode-4:9090": 23580.0
+    },
+    "proc_net_rx_total": {
+      "p2pnode-1:9090": 2882.0,
+      "p2pnode-2:9090": 2022.0,
+      "p2pnode-3:9090": 2622.0,
+      "p2pnode-4:9090": 2542.0
+    },
+    "bandwidth_out_optimumsub": {},
+    "bandwidth_in_optimumsub": {},
+    "shards_total": {},
+    "shards_unnecessary": {},
+    "delivered_messages_count": {},
+    "delivered_messages_bytes": {},
+    "messages_published": {
+      "p2pnode-1:9090": 0.0,
+      "p2pnode-2:9090": 0.0,
+      "p2pnode-3:9090": 0.0
+    }
+  },
+  "latency_ms_full": {
+    "n": 40,
+    "mean": 0.45888532499999996,
+    "p50": 0.293713,
+    "p95": 1.3076082499999977,
+    "p99": 2.4548375699999996,
+    "max": 2.683275
+  }
+}
