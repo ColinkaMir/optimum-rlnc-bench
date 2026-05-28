@@ -59,6 +59,8 @@ Full numbers, methodology notes, and known limits in [`results-n8/combined/repor
     └── config-gossipsub.json
 ```
 
+**Note on raw artefacts.** Only the per-run `summary.json` files are checked in; the underlying `trace.tsv` and `data.tsv` files from `p2p-multi-subscribe` are not, because their total size is roughly 100 MB and they bloat git history without adding much value beyond what `summary.json` already records (per-message latency stats, delivery counts, shard counters, Prometheus deltas). Full from-scratch reproduction is via running `bench/bench.py` against a fresh stack as described below. If you need the raw TSVs for a specific analysis (e.g. per-shard NEW_SHARD trace), open an issue and I will publish them as a release attachment.
+
 ## How to reproduce
 
 ### Prerequisites
@@ -129,7 +131,7 @@ Full numbers, methodology notes, and known limits in [`results-n8/combined/repor
 
 `bench.py` looks for these env vars:
 
-- `OPTIMUM_DEV_REPO` — path to the cloned `optimum-dev-setup-guide` directory (default: `/home/solana/claude-anafra/optimum-rlnc-bench/optimum-dev-setup-guide`, you will want to override)
+- `OPTIMUM_DEV_REPO` — path to the cloned `optimum-dev-setup-guide` directory (default: `./optimum-dev-setup-guide`, resolved against your current working directory)
 - `BENCH_PROM_URL` — Prometheus URL (default: `http://127.0.0.1:9095`)
 - `BENCH_PROXY_URL` — Optimum proxy REST URL (default: `http://127.0.0.1:8081`)
 

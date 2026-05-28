@@ -28,8 +28,8 @@ from typing import Iterable
 
 REPO = Path(os.environ.get(
     "OPTIMUM_DEV_REPO",
-    "/home/solana/claude-anafra/optimum-rlnc-bench/optimum-dev-setup-guide",
-))
+    "./optimum-dev-setup-guide",
+)).resolve()
 P2P_CLIENT = REPO / "grpc_p2p_client"
 IPS_FILE = REPO / "ips.txt"
 PROM_URL = os.environ.get("BENCH_PROM_URL", "http://127.0.0.1:9095")
